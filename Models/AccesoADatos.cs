@@ -21,8 +21,8 @@ public abstract class AccesoADatos
             return File.Exists(archivoCadetes) && File.Exists(archivoCadeterias);
         }
         public abstract List<Cadete> CargarCadetes();
-        public abstract List<Cadeteria> CargarCadeterias(List<Cadete> listadoCadete);
-        public abstract void GuardarNuevoCadete(int id, string nombre, string direccion, string telefono);
+        public abstract List<Cadeteria> CargarCadeterias();
+        public abstract void GuardarNuevoCadete(Cadete nuevoCadete);
         public abstract void GuardarNuevaCadeteria( string nombre, string telefono);
 }
 
@@ -59,7 +59,7 @@ public class AccesoCSV: AccesoADatos
 
         return nuevaLista;
     }
-    public override List<Cadeteria> CargarCadeterias(List<Cadete> listadoCadete)
+    public override List<Cadeteria> CargarCadeterias()
     {
         var ListaCadeterias = new List<Cadeteria>();
         var datos = LeerArchivoCSV(archivoCadeterias);
@@ -83,13 +83,13 @@ public class AccesoCSV: AccesoADatos
 
         return ListaCadeterias;
     }
-    public override void GuardarNuevoCadete(int id, string nombre, string direccion, string telefono)
+    public override void GuardarNuevoCadete(Cadete nuevoCadete)
     {
         // Leer la lista actual de cadetes
         var listaCadetes = CargarCadetes();
 
         // Crear una nueva instancia de Cadete
-        var nuevoCadete = new Cadete(id, nombre, direccion, telefono);
+        
 
         // Agregar el nuevo cadete a la lista
         listaCadetes.Add(nuevoCadete);
@@ -101,7 +101,7 @@ public class AccesoCSV: AccesoADatos
     public override void GuardarNuevaCadeteria( string nombre, string telefono)
     {
         // Leer la lista actual de cadeterías
-        var listaCadeterias = CargarCadeterias(null);
+        var listaCadeterias = CargarCadeterias();
 
         // Crear una nueva instancia de Cadetería
         var nuevaCadeteria = new Cadeteria(nombre, telefono);
@@ -207,7 +207,7 @@ public class AccesoJSON : AccesoADatos
         return cadetes;
     }
 
-    public override List<Cadeteria> CargarCadeterias(List<Cadete> listadoCadete)
+    public override List<Cadeteria> CargarCadeterias()
     {
         List<Cadeteria> cadeterias = new List<Cadeteria>();
 
@@ -223,11 +223,10 @@ public class AccesoJSON : AccesoADatos
         {
             Console.WriteLine($"Error al cargar datos desde archivo JSON: {ex.Message}");
         }
-
         return cadeterias;
     }
 
-    public override void GuardarNuevoCadete(int id, string nombre, string direccion, string telefono)
+    public override void GuardarNuevoCadete(Cadete nuevoCadete)
     {
         // Implementa aquí la lógica para guardar un nuevo cadete en formato JSON
         try
@@ -236,7 +235,7 @@ public class AccesoJSON : AccesoADatos
             var cadetes = CargarCadetes();
 
             // Crear una nueva instancia de Cadete
-            var nuevoCadete = new Cadete(id, nombre, direccion, telefono);
+            
 
             // Agregar el nuevo cadete a la lista
             cadetes.Add(nuevoCadete);
@@ -259,7 +258,7 @@ public class AccesoJSON : AccesoADatos
         try
         {
             // Cargar la lista actual de cadeterías desde el archivo JSON si existe
-            var cadeterias = CargarCadeterias(null); // Puedes pasar null para listadoCadete porque no lo usamos aquí
+            var cadeterias = CargarCadeterias(); // Puedes pasar null para listadoCadete porque no lo usamos aquí
 
             // Crear una nueva instancia de Cadetería
             var nuevaCadeteria = new Cadeteria(nombre, telefono);

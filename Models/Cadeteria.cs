@@ -3,6 +3,7 @@ namespace Cadeterias;
 
 public class Cadeteria
 {
+    
     private static Cadeteria cadeteria;
     private string nombre;
     private string telefono;
@@ -41,10 +42,16 @@ public class Cadeteria
         }
         return cadeteria;
     }
-    public void AgregarCadete(string nombre, string telefono, string direccion){
-        int n = ListaCadetes.Count();
-        Cadete nuevo = new Cadete(n, nombre, direccion, telefono);
+
+    public List<Cadete> ListadoCadetes(){
+        return listaCadetes;
+    }
+    public Cadete AgregarCadete(string nombre, string telefono, string direccion){
+        int n = ListaCadetes.Count;
+        Cadete nuevo = new Cadete(n++, nombre, direccion, telefono);
         ListaCadetes.Add(nuevo);
+
+        return nuevo;
     }
 
     public Pedido CreaPedido( string obrservacion, string nom, string dir, int tel, string refe){
